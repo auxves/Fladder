@@ -125,7 +125,6 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaSegments = ref.watch(playBackModel.select((value) => value?.mediaSegments));
     final player = ref.watch(videoPlayerProvider);
     final subtitleWidget = player.subtitleWidget(showOverlay);
     return InputHandler(
@@ -175,38 +174,6 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                     ],
                   ),
                 ),
-              ),
-              Consumer(
-                builder: (context, ref, child) {
-                  final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
-                  MediaSegment? segment = mediaSegments?.atPosition(position);
-                  SegmentVisibility forceShow =
-                      segment?.visibility(position, force: showOverlay) ?? SegmentVisibility.hidden;
-                  final segmentSkipType = ref
-                      .watch(videoPlayerSettingsProvider.select((value) => value.segmentSkipSettings[segment?.type]));
-                  final autoSkip = forceShow != SegmentVisibility.hidden &&
-                      segmentSkipType == SegmentSkip.skip &&
-                      player.lastState?.buffering == false;
-                  if (autoSkip) {
-                    skipToSegmentEnd(segment);
-                  }
-                  return Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(32),
-                          child: SkipSegmentButton(
-                            segment: segment,
-                            skipType: segmentSkipType,
-                            visibility: forceShow,
-                            pressedSkip: () => skipToSegmentEnd(segment),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
               ),
             ],
           ),
@@ -322,6 +289,11 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
           ),
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Align(alignment: Alignment.centerRight, child: skipButton(context)),
+              ),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: progressBar(mediaPlayback),
@@ -531,6 +503,25 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
           ],
         );
       },
+    );
+  }
+
+  Widget skipButton(BuildContext context) {
+    final mediaSegments = ref.watch(playBackModel.select((value) => value?.mediaSegments));
+    final player = ref.watch(videoPlayerProvider);
+    final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
+    MediaSegment? segment = mediaSegments?.atPosition(position);
+    final segmentSkipType =
+        ref.watch(videoPlayerSettingsProvider.select((value) => value.segmentSkipSettings[segment?.type]));
+    final autoSkip = segmentSkipType == SegmentSkip.skip && player.lastState?.buffering == false;
+    if (autoSkip) {
+      skipToSegmentEnd(segment);
+    }
+
+    return SkipSegmentButton(
+      segment: segment,
+      skipType: segmentSkipType,
+      pressedSkip: () => skipToSegmentEnd(segment),
     );
   }
 

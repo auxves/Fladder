@@ -1187,7 +1187,7 @@
   },
   "mdkExperimental": "MDK backend is nog experimenteel",
   "@mdkExperimental": {},
-  "skipButtonLabel": "(S)kip {segment}",
+  "skipButtonLabel": "Skip {segment}",
   "@skipButtonLabel": {
     "placeholders": {
       "segment": {

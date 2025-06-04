@@ -66,13 +66,11 @@ class OpenQueueButton extends ConsumerWidget {
 class SkipSegmentButton extends ConsumerWidget {
   final MediaSegment? segment;
   final SegmentSkip? skipType;
-  final SegmentVisibility visibility;
 
   final Function() pressedSkip;
   const SkipSegmentButton({
     required this.segment,
     this.skipType,
-    required this.visibility,
     required this.pressedSkip,
     super.key,
   });
@@ -81,25 +79,17 @@ class SkipSegmentButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AnimatedFadeSize(
       child: segment != null && skipType != SegmentSkip.none
-          ? AnimatedOpacity(
-              opacity: switch (visibility) {
-                SegmentVisibility.hidden => 0,
-                SegmentVisibility.partially => 0.15,
-                SegmentVisibility.visible => 1.0,
-              },
-              duration: const Duration(milliseconds: 500),
-              child: ElevatedButton(
-                onPressed: pressedSkip,
-                style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(context.localized.skipButtonLabel(segment!.type.label(context))),
-                      const Icon(Icons.skip_next_rounded)
-                    ],
-                  ),
+          ? ElevatedButton(
+              onPressed: pressedSkip,
+              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(context.localized.skipButtonLabel(segment!.type.label(context))),
+                    const Icon(Icons.skip_next_rounded)
+                  ],
                 ),
               ),
             )
