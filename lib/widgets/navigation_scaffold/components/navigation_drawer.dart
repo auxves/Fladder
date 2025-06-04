@@ -53,7 +53,7 @@ class NestedNavigationDrawer extends ConsumerWidget {
               ),
               IconButton(
                 onPressed: () => toggleExpanded(false),
-                icon: const Icon(IconsaxPlusLinear.sidebar_left),
+                icon: const Icon(IconsaxPlusLinear.menu_1),
               ),
             ],
           ),
@@ -70,18 +70,16 @@ class NestedNavigationDrawer extends ConsumerWidget {
             ),
           ),
         ),
-        ...destinations.map(
-          (destination) => DrawerListButton(
-            label: destination.label,
-            selected: context.router.current.name == destination.route?.routeName,
-            selectedIcon: destination.selectedIcon!,
-            icon: destination.icon!,
-            onPressed: () {
-              destination.action!();
-              Scaffold.of(context).closeDrawer();
-            },
-          ),
-        ),
+        ...destinations.map((destination) => DrawerListButton(
+              label: destination.label,
+              selected: context.router.current.name == destination.route?.routeName,
+              selectedIcon: destination.selectedIcon!,
+              icon: destination.icon!,
+              onPressed: () {
+                destination.action!();
+                Scaffold.of(context).closeDrawer();
+              },
+            )),
         if (views.isNotEmpty) ...{
           const Divider(indent: 28, endIndent: 28),
           Padding(

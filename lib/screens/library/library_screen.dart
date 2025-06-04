@@ -19,7 +19,6 @@ import 'package:fladder/util/adaptive_layout/adaptive_layout.dart';
 import 'package:fladder/util/fladder_image.dart';
 import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/sliver_list_padding.dart';
-import 'package:fladder/widgets/navigation_scaffold/components/background_image.dart';
 import 'package:fladder/widgets/shared/button_group.dart';
 import 'package:fladder/widgets/shared/horizontal_list.dart';
 import 'package:fladder/widgets/shared/item_actions.dart';
@@ -48,12 +47,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> with SingleTicker
     final genres = libraryScreenState.genres;
     final padding = AdaptiveLayout.adaptivePadding(context);
     return NestedScaffold(
-      background: BackgroundImage(
-        items: [
-          ...recommendations.expand((e) => e.posters),
-          ...favourites,
-        ],
-      ),
       body: PullToRefresh(
         refreshOnStart: true,
         refreshKey: refreshKey,

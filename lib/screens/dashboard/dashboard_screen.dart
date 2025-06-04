@@ -24,7 +24,6 @@ import 'package:fladder/util/adaptive_layout/adaptive_layout.dart';
 import 'package:fladder/util/list_padding.dart';
 import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/sliver_list_padding.dart';
-import 'package:fladder/widgets/navigation_scaffold/components/background_image.dart';
 import 'package:fladder/widgets/shared/pinch_poster_zoom.dart';
 import 'package:fladder/widgets/shared/poster_size_slider.dart';
 import 'package:fladder/widgets/shared/pull_to_refresh.dart';
@@ -88,7 +87,6 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     return MediaQuery.removeViewInsets(
       context: context,
       child: NestedScaffold(
-        background: BackgroundImage(items: [...homeCarouselItems, ...dashboardData.nextUp, ...allResume]),
         body: PullToRefresh(
           refreshKey: _refreshIndicatorKey,
           displacement: 80 + MediaQuery.of(context).viewPadding.top,

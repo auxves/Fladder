@@ -29,15 +29,19 @@ class AdaptiveFab {
       duration: const Duration(milliseconds: 250),
       height: 60,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 6),
-        child: FilledButton.tonal(
+        padding: const EdgeInsets.symmetric(horizontal: 4),
+        child: ElevatedButton(
           onPressed: onPressed,
-          child: Row(
-            spacing: 24,
-            children: [
-              child,
-              Flexible(child: Text(title)),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              children: [
+                child,
+                const Spacer(),
+                Flexible(child: Text(title)),
+                const Spacer(),
+              ],
+            ),
           ),
         ),
       ),

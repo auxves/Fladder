@@ -12,7 +12,6 @@ import 'package:fladder/screens/shared/nested_sliver_appbar.dart';
 import 'package:fladder/util/adaptive_layout/adaptive_layout.dart';
 import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/sliver_list_padding.dart';
-import 'package:fladder/widgets/navigation_scaffold/components/background_image.dart';
 import 'package:fladder/widgets/shared/pinch_poster_zoom.dart';
 import 'package:fladder/widgets/shared/poster_size_slider.dart';
 import 'package:fladder/widgets/shared/pull_to_refresh.dart';
@@ -29,7 +28,6 @@ class FavouritesScreen extends ConsumerWidget {
     return PullToRefresh(
       onRefresh: () async => await ref.read(favouritesProvider.notifier).fetchFavourites(),
       child: NestedScaffold(
-        background: BackgroundImage(items: favourites.favourites.values.expand((element) => element).toList()),
         body: PinchPosterZoom(
           scaleDifference: (difference) => ref.read(clientSettingsProvider.notifier).addPosterSize(difference / 2),
           child: CustomScrollView(

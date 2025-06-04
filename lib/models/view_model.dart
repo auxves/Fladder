@@ -118,10 +118,7 @@ class ViewModel {
       label: name,
       selected: selected,
       onPressed: action,
-      onLongPress: onLongPress,
       horizontal: horizontal,
-      expanded: expanded,
-      trailing: trailing ?? [],
       selectedIcon: Icon(collectionType.icon),
       icon: Icon(collectionType.iconOutlined),
     );

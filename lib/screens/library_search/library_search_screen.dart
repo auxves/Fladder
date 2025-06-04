@@ -34,7 +34,6 @@ import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/map_bool_helper.dart';
 import 'package:fladder/util/refresh_state.dart';
 import 'package:fladder/util/router_extension.dart';
-import 'package:fladder/widgets/navigation_scaffold/components/background_image.dart';
 import 'package:fladder/widgets/navigation_scaffold/components/settings_user_icon.dart';
 import 'package:fladder/widgets/shared/fladder_scrollbar.dart';
 import 'package:fladder/widgets/shared/hide_on_scroll.dart';
@@ -153,7 +152,6 @@ class _LibrarySearchScreenState extends ConsumerState<LibrarySearchScreen> {
         }
       },
       child: NestedScaffold(
-        background: BackgroundImage(items: librarySearchResults.activePosters),
         body: Padding(
           padding: EdgeInsets.only(left: AdaptiveLayout.of(context).sideBarWidth),
           child: Scaffold(
