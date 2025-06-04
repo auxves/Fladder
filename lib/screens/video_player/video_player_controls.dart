@@ -254,11 +254,10 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                         ),
                       ),
                     const SizedBox(width: 16),
-                    if (AdaptiveLayout.of(context).inputDevice == InputDevice.touch)
-                      Tooltip(
-                          message: context.localized.stop,
-                          child: IconButton(
-                              onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
+                    Tooltip(
+                        message: context.localized.stop,
+                        child: IconButton(
+                            onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
                   ],
                 ),
               ),
