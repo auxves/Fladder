@@ -140,9 +140,25 @@ class PlaybackModelHelper {
     final ItemBaseModel? syncedItemModel = ref.read(syncProvider.notifier).getItem(syncedItem);
     if (syncedItemModel == null || syncedItem == null || !syncedItem.dataFile.existsSync()) return null;
 
+    final settings = ref.read(videoPlayerSettingsProvider);
+
     final children = ref.read(syncChildrenProvider(syncedItem));
     final syncedItems = children.where((element) => element.videoFile.existsSync()).toList();
     final itemQueue = syncedItems.map((e) => e.createItemModel(ref));
+
+    final streamModel = item.streamModel ?? syncedItemModel.streamModel;
+
+    final defaultAudioStreamIndex =
+        (settings.preserveAudioSel ? oldModel?.mediaStreams?.defaultAudioStreamIndex : null) ??
+            streamModel?.defaultAudioStreamIndex;
+    final defaultSubStreamIndex =
+        (settings.preserveSubtitleSel ? oldModel?.mediaStreams?.defaultSubStreamIndex : null) ??
+            streamModel?.defaultSubStreamIndex;
+
+    final newMediaStreams = streamModel?.copyWith(
+      defaultAudioStreamIndex: defaultAudioStreamIndex,
+      defaultSubStreamIndex: defaultSubStreamIndex,
+    );
 
     return OfflinePlaybackModel(
       item: syncedItemModel,
@@ -152,7 +168,7 @@ class PlaybackModelHelper {
       media: Media(url: syncedItem.videoFile.path),
       queue: itemQueue.nonNulls.toList(),
       syncedQueue: children,
-      mediaStreams: item.streamModel ?? syncedItemModel.streamModel,
+      mediaStreams: newMediaStreams,
     );
   }
 
@@ -178,6 +194,8 @@ class PlaybackModelHelper {
       final userId = ref.read(userProvider)?.id;
       if (userId?.isEmpty == true) return null;
 
+      final settings = ref.read(videoPlayerSettingsProvider);
+
       final queue = oldModel?.queue ?? libraryQueue ?? await collectQueue(item);
 
       final firstItemToPlay = switch (item) {
@@ -189,7 +207,7 @@ class PlaybackModelHelper {
 
       Map<Bitrate, bool> qualityOptions = getVideoQualityOptions(
         VideoQualitySettings(
-          maxBitRate: ref.read(videoPlayerSettingsProvider.select((value) => value.maxHomeBitrate)),
+          maxBitRate: settings.maxHomeBitrate,
           videoBitRate: firstItemToPlay.streamModel?.videoStreams.firstOrNull?.bitRate ?? 0,
           videoCodec: firstItemToPlay.streamModel?.videoStreams.firstOrNull?.codec,
         ),
@@ -197,12 +215,25 @@ class PlaybackModelHelper {
 
       final streamModel = firstItemToPlay.streamModel;
 
+      final defaultAudioStreamIndex = (settings.preserveAudioSel && oldModel != null
+              ? streamModel?.audioStreams
+                  .firstWhereOrNull((stream) => stream.displayTitle == oldModel.defaultAudioStream?.displayTitle)
+                  ?.index
+              : null) ??
+          streamModel?.defaultAudioStreamIndex;
+      final defaultSubStreamIndex = (settings.preserveSubtitleSel && oldModel != null
+              ? streamModel?.subStreams
+                  .firstWhereOrNull((stream) => stream.displayTitle == oldModel.defaultSubStream?.displayTitle)
+                  ?.index
+              : null) ??
+          streamModel?.defaultSubStreamIndex;
+
       final Response<PlaybackInfoResponse> response = await api.itemsItemIdPlaybackInfoPost(
         itemId: firstItemToPlay.id,
         body: PlaybackInfoDto(
           startTimeTicks: startPosition?.toRuntimeTicks,
-          audioStreamIndex: streamModel?.defaultAudioStreamIndex,
-          subtitleStreamIndex: streamModel?.defaultSubStreamIndex,
+          audioStreamIndex: defaultAudioStreamIndex,
+          subtitleStreamIndex: defaultSubStreamIndex,
           enableTranscoding: true,
           autoOpenLiveStream: true,
           deviceProfile: ref.read(videoProfileProvider),
@@ -223,8 +254,8 @@ class PlaybackModelHelper {
       if (mediaSource == null) return null;
 
       final mediaStreamsWithUrls = MediaStreamsModel.fromMediaStreamsList(playbackInfo.mediaSources, ref).copyWith(
-        defaultAudioStreamIndex: streamModel?.defaultAudioStreamIndex,
-        defaultSubStreamIndex: streamModel?.defaultSubStreamIndex,
+        defaultAudioStreamIndex: defaultAudioStreamIndex,
+        defaultSubStreamIndex: defaultSubStreamIndex,
       );
 
       final mediaSegments = await api.mediaSegmentsGet(id: item.id);

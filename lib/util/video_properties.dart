@@ -9,7 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 enum Resolution {
   sd("SD"),
   hd("HD"),
-  udh("4K");
+  fhd("FHD"),
+  uhd("4K");
 
   const Resolution(this.value);
   final String value;
@@ -33,23 +34,21 @@ enum Resolution {
 
   static Resolution? fromSize(int? width, int? height) {
     if (width == null || height == null) return null;
-    if (height <= 1080 && width <= 1920) {
-      return Resolution.hd;
-    } else if (height <= 2160 && width <= 3840) {
-      return Resolution.udh;
-    } else {
+    if (width < 1280 && height < 720) {
       return Resolution.sd;
+    } else if (width < 1920 && height < 1080) {
+      return Resolution.hd;
+    } else if (width < 3840 && height < 2160) {
+      return Resolution.fhd;
+    } else {
+      return Resolution.uhd;
     }
   }
 }
 
 enum DisplayProfile {
   sdr("SDR"),
-  hdr("HDR"),
-  hdr10("HDR10"),
-  dolbyVision("Dolby Vision"),
-  dolbyVisionHdr10("DoVi/HDR10"),
-  hlg("HLG");
+  hdr("HDR");
 
   const DisplayProfile(this.value);
   final String value;
@@ -81,11 +80,14 @@ enum DisplayProfile {
 
   static DisplayProfile fromVideoStream(VideoStreamModel stream) {
     switch (stream.videoRangeType) {
-      case null:
       case dto.VideoRangeType.hlg:
-        return DisplayProfile.hlg;
       case dto.VideoRangeType.hdr10:
-        return DisplayProfile.hdr10;
+      case dto.VideoRangeType.hdr10plus:
+      case dto.VideoRangeType.dovi:
+      case dto.VideoRangeType.doviwithhlg:
+      case dto.VideoRangeType.doviwithhdr10:
+      case dto.VideoRangeType.doviwithsdr:
+        return DisplayProfile.hdr;
       default:
         return DisplayProfile.sdr;
     }

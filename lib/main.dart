@@ -108,11 +108,11 @@ void main() async {
             ))
       ],
       child: AdaptiveLayoutBuilder(
-        fallBack: ViewSize.tablet,
+        fallBack: ViewSize.desktop,
         layoutPoints: [
           LayoutPoints(start: 0, end: 599, type: ViewSize.phone),
-          LayoutPoints(start: 600, end: 1919, type: ViewSize.tablet),
-          LayoutPoints(start: 1920, end: 3180, type: ViewSize.desktop),
+          LayoutPoints(start: 600, end: 1023, type: ViewSize.tablet),
+          LayoutPoints(start: 1024, end: 3180, type: ViewSize.desktop),
         ],
         child: const Main(),
       ),

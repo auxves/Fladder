@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:window_manager/window_manager.dart';
 
+import 'package:fladder/providers/video_player_provider.dart';
 import 'package:fladder/util/adaptive_layout.dart';
 
 class DefaultTitleBar extends ConsumerStatefulWidget {
@@ -178,5 +179,15 @@ class _DefaultTitleBarState extends ConsumerState<DefaultTitleBar> with WindowLi
               },
       ),
     );
+  }
+
+  @override
+  void onWindowEnterFullScreen() {
+    ref.read(mediaPlaybackProvider.notifier).update((state) => state.copyWith(fullScreen: true));
+  }
+
+  @override
+  void onWindowLeaveFullScreen() {
+    ref.read(mediaPlaybackProvider.notifier).update((state) => state.copyWith(fullScreen: false));
   }
 }

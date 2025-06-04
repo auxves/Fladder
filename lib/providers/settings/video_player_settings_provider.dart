@@ -45,6 +45,14 @@ class VideoPlayerSettingsProviderNotifier extends StateNotifier<VideoPlayerSetti
     }
   }
 
+  void setPreserveAudioSel(bool? value, {BuildContext? context}) {
+    state = state.copyWith(preserveAudioSel: value ?? false);
+  }
+
+  void setPreserveSubtitleSel(bool? value, {BuildContext? context}) {
+    state = state.copyWith(preserveSubtitleSel: value ?? false);
+  }
+
   void setFillScreen(bool? value, {BuildContext? context}) {
     state = state.copyWith(fillScreen: value ?? false);
   }

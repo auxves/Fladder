@@ -21,6 +21,8 @@ VideoPlayerSettingsModel _$VideoPlayerSettingsModelFromJson(
 
 /// @nodoc
 mixin _$VideoPlayerSettingsModel {
+  bool get preserveAudioSel => throw _privateConstructorUsedError;
+  bool get preserveSubtitleSel => throw _privateConstructorUsedError;
   double? get screenBrightness => throw _privateConstructorUsedError;
   BoxFit get videoFit => throw _privateConstructorUsedError;
   bool get fillScreen => throw _privateConstructorUsedError;
@@ -54,7 +56,9 @@ abstract class $VideoPlayerSettingsModelCopyWith<$Res> {
       _$VideoPlayerSettingsModelCopyWithImpl<$Res, VideoPlayerSettingsModel>;
   @useResult
   $Res call(
-      {double? screenBrightness,
+      {bool preserveAudioSel,
+      bool preserveSubtitleSel,
+      double? screenBrightness,
       BoxFit videoFit,
       bool fillScreen,
       bool hardwareAccel,
@@ -85,6 +89,8 @@ class _$VideoPlayerSettingsModelCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? preserveAudioSel = null,
+    Object? preserveSubtitleSel = null,
     Object? screenBrightness = freezed,
     Object? videoFit = null,
     Object? fillScreen = null,
@@ -100,6 +106,14 @@ class _$VideoPlayerSettingsModelCopyWithImpl<$Res,
     Object? segmentSkipSettings = null,
   }) {
     return _then(_value.copyWith(
+      preserveAudioSel: null == preserveAudioSel
+          ? _value.preserveAudioSel
+          : preserveAudioSel // ignore: cast_nullable_to_non_nullable
+              as bool,
+      preserveSubtitleSel: null == preserveSubtitleSel
+          ? _value.preserveSubtitleSel
+          : preserveSubtitleSel // ignore: cast_nullable_to_non_nullable
+              as bool,
       screenBrightness: freezed == screenBrightness
           ? _value.screenBrightness
           : screenBrightness // ignore: cast_nullable_to_non_nullable
@@ -166,7 +180,9 @@ abstract class _$$VideoPlayerSettingsModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {double? screenBrightness,
+      {bool preserveAudioSel,
+      bool preserveSubtitleSel,
+      double? screenBrightness,
       BoxFit videoFit,
       bool fillScreen,
       bool hardwareAccel,
@@ -196,6 +212,8 @@ class __$$VideoPlayerSettingsModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? preserveAudioSel = null,
+    Object? preserveSubtitleSel = null,
     Object? screenBrightness = freezed,
     Object? videoFit = null,
     Object? fillScreen = null,
@@ -211,6 +229,14 @@ class __$$VideoPlayerSettingsModelImplCopyWithImpl<$Res>
     Object? segmentSkipSettings = null,
   }) {
     return _then(_$VideoPlayerSettingsModelImpl(
+      preserveAudioSel: null == preserveAudioSel
+          ? _value.preserveAudioSel
+          : preserveAudioSel // ignore: cast_nullable_to_non_nullable
+              as bool,
+      preserveSubtitleSel: null == preserveSubtitleSel
+          ? _value.preserveSubtitleSel
+          : preserveSubtitleSel // ignore: cast_nullable_to_non_nullable
+              as bool,
       screenBrightness: freezed == screenBrightness
           ? _value.screenBrightness
           : screenBrightness // ignore: cast_nullable_to_non_nullable
@@ -272,7 +298,9 @@ class __$$VideoPlayerSettingsModelImplCopyWithImpl<$Res>
 class _$VideoPlayerSettingsModelImpl extends _VideoPlayerSettingsModel
     with DiagnosticableTreeMixin {
   _$VideoPlayerSettingsModelImpl(
-      {this.screenBrightness,
+      {this.preserveAudioSel = true,
+      this.preserveSubtitleSel = true,
+      this.screenBrightness,
       this.videoFit = BoxFit.contain,
       this.fillScreen = false,
       this.hardwareAccel = true,
@@ -293,6 +321,12 @@ class _$VideoPlayerSettingsModelImpl extends _VideoPlayerSettingsModel
   factory _$VideoPlayerSettingsModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$VideoPlayerSettingsModelImplFromJson(json);
 
+  @override
+  @JsonKey()
+  final bool preserveAudioSel;
+  @override
+  @JsonKey()
+  final bool preserveSubtitleSel;
   @override
   final double? screenBrightness;
   @override
@@ -346,7 +380,7 @@ class _$VideoPlayerSettingsModelImpl extends _VideoPlayerSettingsModel
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'VideoPlayerSettingsModel(screenBrightness: $screenBrightness, videoFit: $videoFit, fillScreen: $fillScreen, hardwareAccel: $hardwareAccel, useLibass: $useLibass, playerOptions: $playerOptions, internalVolume: $internalVolume, allowedOrientations: $allowedOrientations, nextVideoType: $nextVideoType, maxHomeBitrate: $maxHomeBitrate, maxInternetBitrate: $maxInternetBitrate, audioDevice: $audioDevice, segmentSkipSettings: $segmentSkipSettings)';
+    return 'VideoPlayerSettingsModel(preserveAudioSel: $preserveAudioSel, preserveSubtitleSel: $preserveSubtitleSel, screenBrightness: $screenBrightness, videoFit: $videoFit, fillScreen: $fillScreen, hardwareAccel: $hardwareAccel, useLibass: $useLibass, playerOptions: $playerOptions, internalVolume: $internalVolume, allowedOrientations: $allowedOrientations, nextVideoType: $nextVideoType, maxHomeBitrate: $maxHomeBitrate, maxInternetBitrate: $maxInternetBitrate, audioDevice: $audioDevice, segmentSkipSettings: $segmentSkipSettings)';
   }
 
   @override
@@ -354,6 +388,8 @@ class _$VideoPlayerSettingsModelImpl extends _VideoPlayerSettingsModel
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'VideoPlayerSettingsModel'))
+      ..add(DiagnosticsProperty('preserveAudioSel', preserveAudioSel))
+      ..add(DiagnosticsProperty('preserveSubtitleSel', preserveSubtitleSel))
       ..add(DiagnosticsProperty('screenBrightness', screenBrightness))
       ..add(DiagnosticsProperty('videoFit', videoFit))
       ..add(DiagnosticsProperty('fillScreen', fillScreen))
@@ -388,7 +424,9 @@ class _$VideoPlayerSettingsModelImpl extends _VideoPlayerSettingsModel
 
 abstract class _VideoPlayerSettingsModel extends VideoPlayerSettingsModel {
   factory _VideoPlayerSettingsModel(
-          {final double? screenBrightness,
+          {final bool preserveAudioSel,
+          final bool preserveSubtitleSel,
+          final double? screenBrightness,
           final BoxFit videoFit,
           final bool fillScreen,
           final bool hardwareAccel,
@@ -407,6 +445,10 @@ abstract class _VideoPlayerSettingsModel extends VideoPlayerSettingsModel {
   factory _VideoPlayerSettingsModel.fromJson(Map<String, dynamic> json) =
       _$VideoPlayerSettingsModelImpl.fromJson;
 
+  @override
+  bool get preserveAudioSel;
+  @override
+  bool get preserveSubtitleSel;
   @override
   double? get screenBrightness;
   @override

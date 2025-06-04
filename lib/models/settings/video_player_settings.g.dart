@@ -9,6 +9,8 @@ part of 'video_player_settings.dart';
 _$VideoPlayerSettingsModelImpl _$$VideoPlayerSettingsModelImplFromJson(
         Map<String, dynamic> json) =>
     _$VideoPlayerSettingsModelImpl(
+      preserveAudioSel: json['preserveAudioSel'] as bool? ?? true,
+      preserveSubtitleSel: json['preserveSubtitleSel'] as bool? ?? true,
       screenBrightness: (json['screenBrightness'] as num?)?.toDouble(),
       videoFit: $enumDecodeNullable(_$BoxFitEnumMap, json['videoFit']) ??
           BoxFit.contain,
@@ -42,6 +44,8 @@ _$VideoPlayerSettingsModelImpl _$$VideoPlayerSettingsModelImplFromJson(
 Map<String, dynamic> _$$VideoPlayerSettingsModelImplToJson(
         _$VideoPlayerSettingsModelImpl instance) =>
     <String, dynamic>{
+      'preserveAudioSel': instance.preserveAudioSel,
+      'preserveSubtitleSel': instance.preserveSubtitleSel,
       'screenBrightness': instance.screenBrightness,
       'videoFit': _$BoxFitEnumMap[instance.videoFit]!,
       'fillScreen': instance.fillScreen,

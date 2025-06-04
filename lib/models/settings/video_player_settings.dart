@@ -17,6 +17,8 @@ class VideoPlayerSettingsModel with _$VideoPlayerSettingsModel {
   const VideoPlayerSettingsModel._();
 
   factory VideoPlayerSettingsModel({
+    @Default(true) bool preserveAudioSel,
+    @Default(true) bool preserveSubtitleSel,
     double? screenBrightness,
     @Default(BoxFit.contain) BoxFit videoFit,
     @Default(false) bool fillScreen,
@@ -50,6 +52,8 @@ class VideoPlayerSettingsModel with _$VideoPlayerSettingsModel {
     if (identical(this, other)) return true;
 
     return other is VideoPlayerSettingsModel &&
+        other.preserveAudioSel == preserveAudioSel &&
+        other.preserveSubtitleSel == preserveSubtitleSel &&
         other.screenBrightness == screenBrightness &&
         other.videoFit == videoFit &&
         other.fillScreen == fillScreen &&
@@ -63,6 +67,8 @@ class VideoPlayerSettingsModel with _$VideoPlayerSettingsModel {
   @override
   int get hashCode {
     return screenBrightness.hashCode ^
+        preserveAudioSel.hashCode ^
+        preserveSubtitleSel.hashCode ^
         videoFit.hashCode ^
         fillScreen.hashCode ^
         hardwareAccel.hashCode ^

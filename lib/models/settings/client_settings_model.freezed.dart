@@ -477,8 +477,8 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
                 other.blurPlaceHolders == blurPlaceHolders) &&
             (identical(other.blurUpcomingEpisodes, blurUpcomingEpisodes) ||
                 other.blurUpcomingEpisodes == blurUpcomingEpisodes) &&
-            (identical(other.selectedLocale, selectedLocale) ||
-                other.selectedLocale == selectedLocale) &&
+            const DeepCollectionEquality()
+                .equals(other.selectedLocale, selectedLocale) &&
             (identical(other.enableMediaKeys, enableMediaKeys) ||
                 other.enableMediaKeys == enableMediaKeys) &&
             (identical(other.posterSize, posterSize) ||
@@ -511,7 +511,7 @@ class _$ClientSettingsModelImpl extends _ClientSettingsModel
         amoledBlack,
         blurPlaceHolders,
         blurUpcomingEpisodes,
-        selectedLocale,
+        const DeepCollectionEquality().hash(selectedLocale),
         enableMediaKeys,
         posterSize,
         pinchPosterZoom,

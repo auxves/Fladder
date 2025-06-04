@@ -40,7 +40,7 @@ class NavigationBody extends ConsumerStatefulWidget {
 }
 
 class _NavigationBodyState extends ConsumerState<NavigationBody> {
-  bool expandedSideBar = true;
+  bool expandedSideBar = false;
 
   @override
   void initState() {

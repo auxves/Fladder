@@ -1134,7 +1134,7 @@
   },
   "noVideoPlayerOptions": "The selected backend has no options",
   "mdkExperimental": "MDK is still in a experimental stage",
-  "skipButtonLabel": "(S)kip {segment}",
+  "skipButtonLabel": "Skip {segment}",
   "@skipButtonLabel": {
     "placeholders": {
       "segment": {

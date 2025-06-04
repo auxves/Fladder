@@ -132,6 +132,28 @@ class _PlayerSettingsPageState extends ConsumerState<PlayerSettingsPage> {
             ),
           ),
           const Divider(),
+          SettingsLabelDivider(label: context.localized.audio),
+          SettingsListTile(
+            label: const Text("Preserve audio selection"),
+            subLabel: const Text("Keep the current audio track selection across episodes"),
+            onTap: () => provider.setPreserveAudioSel(!videoSettings.preserveAudioSel),
+            trailing: Switch(
+              value: videoSettings.preserveAudioSel,
+              onChanged: (value) => provider.setPreserveAudioSel(value),
+            ),
+          ),
+          const Divider(),
+          SettingsLabelDivider(label: context.localized.subtitles),
+          SettingsListTile(
+            label: const Text("Preserve subtitle selection"),
+            subLabel: const Text("Keep the current subtitle track selection across episodes"),
+            onTap: () => provider.setPreserveSubtitleSel(!videoSettings.preserveSubtitleSel),
+            trailing: Switch(
+              value: videoSettings.preserveSubtitleSel,
+              onChanged: (value) => provider.setPreserveSubtitleSel(value),
+            ),
+          ),
+          const Divider(),
           SettingsLabelDivider(label: context.localized.mediaSegmentActions),
           ...videoSettings.segmentSkipSettings.entries.sorted((a, b) => b.key.index.compareTo(a.key.index)).map(
                 (entry) => Padding(

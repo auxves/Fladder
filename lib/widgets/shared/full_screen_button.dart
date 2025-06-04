@@ -16,7 +16,6 @@ Future<void> closeFullScreen() async {
 Future<void> toggleFullScreen(WidgetRef ref) async {
   final isFullScreen = await windowManager.isFullScreen();
   await windowManager.setFullScreen(!isFullScreen);
-  ref.read(mediaPlaybackProvider.notifier).update((state) => state.copyWith(fullScreen: !isFullScreen));
 }
 
 class FullScreenButton extends ConsumerWidget {

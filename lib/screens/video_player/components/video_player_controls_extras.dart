@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:iconsax_plus/iconsax_plus.dart';
+
 import 'package:fladder/models/items/media_segments_model.dart';
 import 'package:fladder/providers/video_player_provider.dart';
 import 'package:fladder/screens/shared/animated_fade_size.dart';
@@ -66,13 +68,11 @@ class OpenQueueButton extends ConsumerWidget {
 class SkipSegmentButton extends ConsumerWidget {
   final MediaSegment? segment;
   final SegmentSkip? skipType;
-  final bool isOverlayVisible;
 
   final Function() pressedSkip;
   const SkipSegmentButton({
     required this.segment,
     this.skipType,
-    required this.isOverlayVisible,
     required this.pressedSkip,
     super.key,
   });
@@ -81,21 +81,18 @@ class SkipSegmentButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AnimatedFadeSize(
       child: segment != null && skipType != SegmentSkip.none
-          ? AnimatedOpacity(
-              opacity: isOverlayVisible ? 1 : 0.15,
-              duration: const Duration(milliseconds: 500),
-              child: ElevatedButton(
-                onPressed: pressedSkip,
-                style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(context.localized.skipButtonLabel(segment!.type.label(context))),
-                      const Icon(Icons.skip_next_rounded)
-                    ],
-                  ),
+          ? ElevatedButton(
+              onPressed: pressedSkip,
+              style: ElevatedButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(context.localized.skipButtonLabel(segment!.type.label(context))),
+                    const SizedBox(width: 8),
+                    const Icon(IconsaxPlusLinear.forward)
+                  ],
                 ),
               ),
             )

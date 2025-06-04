@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:fladder/models/items/chapters_model.dart';
-import 'package:fladder/models/items/media_segments_model.dart';
 import 'package:fladder/providers/video_player_provider.dart';
 import 'package:fladder/util/duration_extensions.dart';
 import 'package:fladder/util/list_padding.dart';
@@ -53,7 +52,6 @@ class _ChapterProgressSliderState extends ConsumerState<VideoProgressBar> {
     final isVisible = (onDragStart ? true : onHoverStart);
     final player = ref.watch(videoPlayerProvider);
     final position = onDragStart ? currentDuration : widget.position;
-    final MediaSegmentsModel? mediaSegments = ref.read(playBackModel.select((value) => value?.mediaSegments));
     final relativeFraction = position.inMilliseconds / widget.duration.inMilliseconds;
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -137,22 +135,6 @@ class _ChapterProgressSliderState extends ConsumerState<VideoProgressBar> {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  ...?mediaSegments?.segments.map(
-                    (segment) => Positioned(
-                      left: calculateStartOffset(constraints, segment.start),
-                      right: calculateRightOffset(constraints, segment.end),
-                      bottom: 0,
-                      child: Container(
-                        height: 6,
-                        decoration: BoxDecoration(
-                          color: segment.type.color,
-                          borderRadius: BorderRadius.circular(
-                            100,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                   if (!widget.buffering) ...{
                     //VideoBufferBar
                     Positioned(

@@ -23,7 +23,6 @@ import 'package:fladder/screens/video_player/components/video_playback_informati
 import 'package:fladder/screens/video_player/components/video_player_controls_extras.dart';
 import 'package:fladder/screens/video_player/components/video_player_options_sheet.dart';
 import 'package:fladder/screens/video_player/components/video_player_quality_controls.dart';
-import 'package:fladder/screens/video_player/components/video_player_seek_indicator.dart';
 import 'package:fladder/screens/video_player/components/video_progress_bar.dart';
 import 'package:fladder/screens/video_player/components/video_volume_slider.dart';
 import 'package:fladder/util/adaptive_layout.dart';
@@ -70,6 +69,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
         ref.read(videoPlayerSettingsProvider.notifier).steppedVolume(-5);
         return true;
       }
+      if (value.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        seekBack(ref);
+        return true;
+      }
+      if (value.logicalKey == LogicalKeyboardKey.arrowRight) {
+        seekForward(ref);
+        return true;
+      }
     }
     if (value is KeyDownEvent) {
       if (value.logicalKey == LogicalKeyboardKey.keyS) {
@@ -100,6 +107,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
         ref.read(videoPlayerSettingsProvider.notifier).steppedVolume(-5);
         return true;
       }
+      if (value.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        seekBack(ref);
+        return true;
+      }
+      if (value.logicalKey == LogicalKeyboardKey.arrowRight) {
+        seekForward(ref);
+        return true;
+      }
     }
     return false;
   }
@@ -112,11 +127,10 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
 
   @override
   Widget build(BuildContext context) {
-    final mediaSegments = ref.watch(playBackModel.select((value) => value?.mediaSegments));
     final player = ref.watch(videoPlayerProvider);
     final subtitleWidget = player.subtitleWidget(showOverlay);
     return InputHandler(
-      autoFocus: false,
+      autoFocus: true,
       onKeyEvent: (node, event) => _onKey(event) ? KeyEventResult.handled : KeyEventResult.ignored,
       child: PopScope(
         canPop: false,
@@ -162,37 +176,6 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                     ],
                   ),
                 ),
-              ),
-              const VideoPlayerSeekIndicator(),
-              Consumer(
-                builder: (context, ref, child) {
-                  final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
-                  MediaSegment? segment = mediaSegments?.atPosition(position);
-                  bool forceShow = segment?.forceShow(position) ?? false;
-                  final segmentSkipType = ref
-                      .watch(videoPlayerSettingsProvider.select((value) => value.segmentSkipSettings[segment?.type]));
-                  final autoSkip =
-                      forceShow == true && segmentSkipType == SegmentSkip.skip && player.lastState?.buffering == false;
-                  if (autoSkip) {
-                    skipToSegmentEnd(segment);
-                  }
-                  return Stack(
-                    children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Padding(
-                          padding: const EdgeInsets.all(32),
-                          child: SkipSegmentButton(
-                            segment: segment,
-                            skipType: segmentSkipType,
-                            isOverlayVisible: forceShow ? true : showOverlay,
-                            pressedSkip: () => skipToSegmentEnd(segment),
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                },
               ),
             ],
           ),
@@ -273,11 +256,10 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                         ),
                       ),
                     const SizedBox(width: 16),
-                    if (AdaptiveLayout.of(context).inputDevice == InputDevice.touch)
-                      Tooltip(
-                          message: context.localized.stop,
-                          child: IconButton(
-                              onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
+                    Tooltip(
+                        message: context.localized.stop,
+                        child: IconButton(
+                            onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
                   ],
                 ),
               ),
@@ -308,6 +290,11 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
           ),
           child: Column(
             children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Align(alignment: Alignment.centerRight, child: skipButton(context)),
+              ),
+              const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: progressBar(mediaPlayback),
@@ -518,6 +505,26 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     );
   }
 
+  Widget skipButton(BuildContext context) {
+    final mediaSegments = ref.watch(playBackModel.select((value) => value?.mediaSegments));
+    final player = ref.watch(videoPlayerProvider);
+    final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
+    MediaSegment? segment = mediaSegments?.atPosition(position);
+    bool forceShow = segment?.forceShow(position) ?? false;
+    final segmentSkipType =
+        ref.watch(videoPlayerSettingsProvider.select((value) => value.segmentSkipSettings[segment?.type]));
+    final autoSkip = forceShow == true && segmentSkipType == SegmentSkip.skip && player.lastState?.buffering == false;
+    if (autoSkip) {
+      skipToSegmentEnd(segment);
+    }
+
+    return SkipSegmentButton(
+      segment: segment,
+      skipType: segmentSkipType,
+      pressedSkip: () => skipToSegmentEnd(segment),
+    );
+  }
+
   Widget get previousButton {
     return Consumer(
       builder: (context, ref, child) {
@@ -586,11 +593,11 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
   Widget seekForwardButton(WidgetRef ref) {
     return IconButton(
       onPressed: () => seekForward(ref),
-      tooltip: "15",
+      tooltip: "10",
       iconSize: 40,
       icon: const Stack(
         children: [
-          Icon(IconsaxPlusLinear.forward_15_seconds),
+          Icon(IconsaxPlusLinear.forward_10_seconds),
         ],
       ),
     );
@@ -604,14 +611,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     }
   }
 
-  void seekBack(WidgetRef ref, {int seconds = 15}) {
+  void seekBack(WidgetRef ref, {int seconds = 10}) {
     final mediaPlayback = ref.read(mediaPlaybackProvider);
     resetTimer();
     final newPosition = (mediaPlayback.position.inSeconds - seconds).clamp(0, mediaPlayback.duration.inSeconds);
     ref.read(videoPlayerProvider).seek(Duration(seconds: newPosition));
   }
 
-  void seekForward(WidgetRef ref, {int seconds = 15}) {
+  void seekForward(WidgetRef ref, {int seconds = 10}) {
     final mediaPlayback = ref.read(mediaPlaybackProvider);
     resetTimer();
     final newPosition = (mediaPlayback.position.inSeconds + seconds).clamp(0, mediaPlayback.duration.inSeconds);

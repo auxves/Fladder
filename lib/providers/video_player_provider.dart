@@ -56,7 +56,6 @@ class VideoPlayerNotifier extends StateNotifier<MediaControlsWrapper> {
 
   Future<void> updatePosition(Duration event) async {
     if (!state.hasPlayer) return;
-    if (playbackState.playing == false) return;
 
     final position = event;
     final lastPosition = ref.read(mediaPlaybackProvider.select((value) => value.lastPosition));
