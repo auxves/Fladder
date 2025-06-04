@@ -22,7 +22,6 @@ import 'package:fladder/screens/video_player/components/video_playback_informati
 import 'package:fladder/screens/video_player/components/video_player_controls_extras.dart';
 import 'package:fladder/screens/video_player/components/video_player_options_sheet.dart';
 import 'package:fladder/screens/video_player/components/video_player_quality_controls.dart';
-import 'package:fladder/screens/video_player/components/video_player_seek_indicator.dart';
 import 'package:fladder/screens/video_player/components/video_progress_bar.dart';
 import 'package:fladder/screens/video_player/components/video_volume_slider.dart';
 import 'package:fladder/util/adaptive_layout/adaptive_layout.dart';
@@ -68,6 +67,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
         ref.read(videoPlayerSettingsProvider.notifier).steppedVolume(-5);
         return true;
       }
+      if (value.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        seekBack(ref);
+        return true;
+      }
+      if (value.logicalKey == LogicalKeyboardKey.arrowRight) {
+        seekForward(ref);
+        return true;
+      }
     }
     if (value is KeyDownEvent) {
       if (value.logicalKey == LogicalKeyboardKey.keyS) {
@@ -86,6 +93,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
       }
       if (value.logicalKey == LogicalKeyboardKey.keyF) {
         fullScreenHelper.toggleFullScreen(ref);
+        return true;
+      }
+      if (value.logicalKey == LogicalKeyboardKey.arrowLeft) {
+        seekBack(ref);
+        return true;
+      }
+      if (value.logicalKey == LogicalKeyboardKey.arrowRight) {
+        seekForward(ref);
         return true;
       }
       if (value.logicalKey == LogicalKeyboardKey.arrowUp) {
@@ -114,7 +129,7 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     final player = ref.watch(videoPlayerProvider);
     final subtitleWidget = player.subtitleWidget(showOverlay);
     return InputHandler(
-      autoFocus: false,
+      autoFocus: true,
       onKeyEvent: (node, event) => _onKey(event) ? KeyEventResult.handled : KeyEventResult.ignored,
       child: PopScope(
         canPop: false,
@@ -161,7 +176,6 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                   ),
                 ),
               ),
-              const VideoPlayerSeekIndicator(),
               Consumer(
                 builder: (context, ref, child) {
                   final position = ref.watch(mediaPlaybackProvider.select((value) => value.position));
@@ -588,11 +602,11 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
   Widget seekForwardButton(WidgetRef ref) {
     return IconButton(
       onPressed: () => seekForward(ref),
-      tooltip: "15",
+      tooltip: "10",
       iconSize: 40,
       icon: const Stack(
         children: [
-          Icon(IconsaxPlusLinear.forward_15_seconds),
+          Icon(IconsaxPlusLinear.forward_10_seconds),
         ],
       ),
     );
@@ -606,14 +620,14 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
     }
   }
 
-  void seekBack(WidgetRef ref, {int seconds = 15}) {
+  void seekBack(WidgetRef ref, {int seconds = 10}) {
     final mediaPlayback = ref.read(mediaPlaybackProvider);
     resetTimer();
     final newPosition = (mediaPlayback.position.inSeconds - seconds).clamp(0, mediaPlayback.duration.inSeconds);
     ref.read(videoPlayerProvider).seek(Duration(seconds: newPosition));
   }
 
-  void seekForward(WidgetRef ref, {int seconds = 15}) {
+  void seekForward(WidgetRef ref, {int seconds = 10}) {
     final mediaPlayback = ref.read(mediaPlaybackProvider);
     resetTimer();
     final newPosition = (mediaPlayback.position.inSeconds + seconds).clamp(0, mediaPlayback.duration.inSeconds);
