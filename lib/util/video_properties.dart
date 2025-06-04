@@ -11,7 +11,8 @@ import 'package:fladder/screens/shared/flat_button.dart';
 enum Resolution {
   sd("SD"),
   hd("HD"),
-  udh("4K");
+  fhd("FHD"),
+  uhd("4K");
 
   const Resolution(this.value);
   final String value;
@@ -35,25 +36,21 @@ enum Resolution {
 
   static Resolution? fromSize(int? width, int? height) {
     if (width == null || height == null) return null;
-    if (height <= 1080 && width <= 1920) {
-      return Resolution.hd;
-    } else if (height <= 2160 && width <= 3840) {
-      return Resolution.udh;
-    } else {
+    if (width < 1280 && height < 720) {
       return Resolution.sd;
+    } else if (width < 1920 && height < 1080) {
+      return Resolution.hd;
+    } else if (width < 3840 && height < 2160) {
+      return Resolution.fhd;
+    } else {
+      return Resolution.uhd;
     }
   }
 }
 
 enum DisplayProfile {
   sdr("SDR"),
-  hdr("HDR"),
-  hdr10("HDR10"),
-  hdr10Plus("HDR10+"),
-  dolbyVision("Dolby Vision"),
-  dolbyVisionHdr10("DoVi/HDR10"),
-  dolbyVisionHlg("DoVi/Hlg"),
-  hlg("HLG");
+  hdr("HDR");
 
   const DisplayProfile(this.value);
   final String value;
@@ -85,13 +82,13 @@ enum DisplayProfile {
 
   static DisplayProfile fromVideoStream(VideoStreamModel stream) {
     return switch (stream.videoRangeType) {
-      dto.VideoRangeType.doviwithsdr => DisplayProfile.dolbyVisionHlg,
-      dto.VideoRangeType.doviwithhdr10 => DisplayProfile.dolbyVisionHdr10,
-      dto.VideoRangeType.dovi => DisplayProfile.dolbyVision,
-      dto.VideoRangeType.hlg => DisplayProfile.hlg,
-      dto.VideoRangeType.hdr10 => DisplayProfile.hdr10,
-      dto.VideoRangeType.doviwithhlg => DisplayProfile.dolbyVisionHlg,
-      dto.VideoRangeType.hdr10plus => DisplayProfile.hdr10Plus,
+      dto.VideoRangeType.doviwithsdr => DisplayProfile.hdr,
+      dto.VideoRangeType.doviwithhdr10 => DisplayProfile.hdr,
+      dto.VideoRangeType.dovi => DisplayProfile.hdr,
+      dto.VideoRangeType.hlg => DisplayProfile.hdr,
+      dto.VideoRangeType.hdr10 => DisplayProfile.hdr,
+      dto.VideoRangeType.doviwithhlg => DisplayProfile.hdr,
+      dto.VideoRangeType.hdr10plus => DisplayProfile.hdr,
       _ => DisplayProfile.sdr
     };
   }
