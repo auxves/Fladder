@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import 'package:auto_route/auto_route.dart';
@@ -43,27 +41,7 @@ class SideNavigationBar extends ConsumerStatefulWidget {
 
 class _SideNavigationBarState extends ConsumerState<SideNavigationBar> {
   bool expandedSideBar = false;
-  bool showOnHover = false;
-  Timer? timer;
   double currentWidth = 80;
-
-  void startTimer() {
-    timer?.cancel();
-    timer = Timer(const Duration(milliseconds: 650), () {
-      setState(() {
-        showOnHover = true;
-      });
-    });
-  }
-
-  void stopTimer() {
-    timer?.cancel();
-    timer = Timer(const Duration(milliseconds: 125), () {
-      setState(() {
-        showOnHover = false;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +52,7 @@ class _SideNavigationBarState extends ConsumerState<SideNavigationBar> {
     final collapsedWidth = 90.0 + padding.left;
     final largeBar = AdaptiveLayout.layoutModeOf(context) != LayoutMode.single;
     final fullyExpanded = largeBar ? expandedSideBar : false;
-    final shouldExpand = showOnHover || fullyExpanded;
+    final shouldExpand = fullyExpanded;
     final isDesktop = AdaptiveLayout.of(context).isDesktop;
     return Stack(
       children: [
@@ -91,9 +69,6 @@ class _SideNavigationBarState extends ConsumerState<SideNavigationBar> {
             color: Theme.of(context).colorScheme.surface.withValues(alpha: shouldExpand ? 0.95 : 0.85),
             width: shouldExpand ? expandedWidth : collapsedWidth,
             child: MouseRegion(
-              onEnter: (value) => startTimer(),
-              onExit: (event) => stopTimer(),
-              onHover: (value) => startTimer(),
               child: Column(
                 children: [
                   if (isDesktop && AdaptiveLayout.of(context).platform != TargetPlatform.macOS) ...{
@@ -120,9 +95,6 @@ class _SideNavigationBarState extends ConsumerState<SideNavigationBar> {
                                     ? () => widget.scaffoldKey.currentState?.openDrawer()
                                     : () => setState(() {
                                           expandedSideBar = !expandedSideBar;
-                                          if (!expandedSideBar) {
-                                            showOnHover = false;
-                                          }
                                         }),
                                 icon: Icon(
                                   largeBar && expandedSideBar ? IconsaxPlusLinear.sidebar_left : IconsaxPlusLinear.menu,
