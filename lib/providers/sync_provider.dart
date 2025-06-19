@@ -127,9 +127,7 @@ class SyncNotifier extends StateNotifier<SyncSettingsModel> {
 
   late final JellyService api = ref.read(jellyApiProvider);
 
-  String? get _savePath => !kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)
-      ? ref.read(clientSettingsProvider.select((value) => value.syncPath))
-      : mobileDirectory.path;
+  String? get _savePath => ref.read(clientSettingsProvider.select((value) => value.syncPath)) ?? mobileDirectory.path;
 
   String? get savePath => _savePath;
 
