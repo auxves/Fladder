@@ -18,6 +18,7 @@ import 'package:fladder/screens/syncing/sync_widgets.dart';
 import 'package:fladder/screens/syncing/widgets/sync_progress_builder.dart';
 import 'package:fladder/screens/syncing/widgets/sync_status_overlay.dart';
 import 'package:fladder/util/adaptive_layout/adaptive_layout.dart';
+import 'package:fladder/util/item_base_model/play_item_helpers.dart';
 import 'package:fladder/util/list_padding.dart';
 import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/size_formatting.dart';
@@ -170,7 +171,15 @@ class _SyncItemDetailsState extends ConsumerState<SyncItemDetails> {
                         onPressed: () async => await ref.read(syncProvider.notifier).syncVideoFile(syncedItem, false),
                         icon: const Icon(IconsaxPlusLinear.cloud_change),
                       )
-                    else if (hasFile)
+                    else if (hasFile) ...[
+                      IconButtonAwait(
+                        onPressed: () async {
+                          final item = ref.read(syncProvider.notifier).getItem(syncedItem);
+                          if (item == null) return;
+                          await item.play(context, ref, showPlaybackOption: true);
+                        },
+                        icon: const Icon(IconsaxPlusLinear.play),
+                      ),
                       IconButtonAwait(
                         color: Theme.of(context).colorScheme.error,
                         onPressed: () {
@@ -189,6 +198,7 @@ class _SyncItemDetailsState extends ConsumerState<SyncItemDetails> {
                         },
                         icon: const Icon(IconsaxPlusLinear.trash),
                       ),
+                    ],
                   ].addInBetween(const SizedBox(width: 16)),
                 ),
               },

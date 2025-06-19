@@ -167,25 +167,13 @@ class PlaybackModelHelper {
     List<ItemBaseModel>? libraryQueue,
     bool showPlaybackOptions = false,
     Duration? startPosition,
+    PlaybackType? playbackType = PlaybackType.directStream,
   }) async {
     if (item == null) return null;
     final userId = ref.read(userProvider)?.id;
     if (userId?.isEmpty == true) return null;
 
-    final queue = oldModel?.queue ?? libraryQueue ?? await collectQueue(item);
-
-    final firstItemToPlay = switch (item) {
-      SeriesModel _ || SeasonModel _ => (queue.whereType<EpisodeModel>().toList().nextUp),
-      _ => item,
-    };
-
-    if (firstItemToPlay == null) return null;
-
-    final fullItem = (await api.usersUserIdItemsItemIdGet(itemId: firstItemToPlay.id)).body;
-
-    if (fullItem == null) return null;
-
-    SyncedItem? syncedItem = ref.read(syncProvider.notifier).getSyncedItem(fullItem);
+    SyncedItem? syncedItem = ref.read(syncProvider.notifier).getSyncedItem(item);
 
     final firstItemIsSynced = syncedItem != null && syncedItem.status == SyncStatus.complete;
 
@@ -195,35 +183,41 @@ class PlaybackModelHelper {
       if (firstItemIsSynced) PlaybackType.offline,
     };
 
-    if ((showPlaybackOptions || firstItemIsSynced) && context != null) {
-      final playbackType = await showPlaybackTypeSelection(
+    if (showPlaybackOptions && context != null) {
+      playbackType = await showPlaybackTypeSelection(
         context: context,
         options: options,
       );
 
       if (!context.mounted) return null;
-
-      return switch (playbackType) {
-        PlaybackType.directStream || PlaybackType.transcode => await _createServerPlaybackModel(
-            fullItem,
-            playbackType,
-            oldModel: oldModel,
-            libraryQueue: queue,
-            startPosition: startPosition,
-          ),
-        PlaybackType.offline => await _createOfflinePlaybackModel(fullItem, syncedItem),
-        null => null
-      };
-    } else {
-      return (await _createServerPlaybackModel(
-            fullItem,
-            PlaybackType.directStream,
-            startPosition: startPosition,
-            oldModel: oldModel,
-            libraryQueue: queue,
-          )) ??
-          await _createOfflinePlaybackModel(fullItem, syncedItem);
     }
+
+    if (playbackType == PlaybackType.directStream || playbackType == PlaybackType.transcode) {
+      final queue = oldModel?.queue ?? libraryQueue ?? await collectQueue(item);
+
+      final firstItemToPlay = switch (item) {
+        SeriesModel _ || SeasonModel _ => (queue.whereType<EpisodeModel>().toList().nextUp),
+        _ => item,
+      };
+
+      if (firstItemToPlay == null) return null;
+
+      final fullItem = (await api.usersUserIdItemsItemIdGet(itemId: firstItemToPlay.id)).body;
+
+      if (fullItem == null) return null;
+
+      return _createServerPlaybackModel(
+        fullItem,
+        playbackType,
+        oldModel: oldModel,
+        libraryQueue: queue,
+        startPosition: startPosition,
+      );
+    } else if (playbackType == PlaybackType.offline) {
+      return _createOfflinePlaybackModel(item, syncedItem);
+    }
+
+    return null;
   }
 
   Future<PlaybackModel?> _createServerPlaybackModel(

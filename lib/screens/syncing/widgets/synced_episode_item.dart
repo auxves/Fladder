@@ -14,6 +14,7 @@ import 'package:fladder/util/list_padding.dart';
 import 'package:fladder/util/localization_helper.dart';
 import 'package:fladder/util/size_formatting.dart';
 import 'package:fladder/widgets/shared/icon_button_await.dart';
+import 'package:fladder/util/item_base_model/play_item_helpers.dart';
 
 class SyncedEpisodeItem extends ConsumerStatefulWidget {
   const SyncedEpisodeItem({
@@ -94,6 +95,14 @@ class _SyncedEpisodeItemState extends ConsumerState<SyncedEpisodeItem> {
             ],
           ),
         ),
+        if (hasFile && !downloadTask.hasDownload)
+          IconButtonAwait(
+            onPressed: () async {
+              final item = ref.read(syncProvider.notifier).getItem(syncedItem);
+              await item.play(context, ref, showPlaybackOption: true);
+            },
+            icon: const Icon(IconsaxPlusLinear.play),
+          ),
         if (!hasFile && !downloadTask.hasDownload)
           IconButtonAwait(
             onPressed: () async => await ref.read(syncProvider.notifier).syncVideoFile(syncedItem, false),
