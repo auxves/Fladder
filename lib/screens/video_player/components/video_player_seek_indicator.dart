@@ -44,19 +44,23 @@ class VideoPlayerSeekIndicatorState extends ConsumerState<VideoPlayerSeekIndicat
     widget.controller?._seekForward = seekForward;
   }
 
+  void seekWithOffset(int offset) {
+    final mediaPlayback = ref.read(mediaPlaybackProvider);
+    final newPosition = (mediaPlayback.position.inSeconds + offset).clamp(0, mediaPlayback.duration.inSeconds);
+    ref.read(videoPlayerProvider).seek(Duration(seconds: newPosition));
+  }
+
   void onSeekEnd() {
     setState(() {
       visible = false;
     });
     timer?.cancel();
     timer = null;
-    if (seekPosition == 0) return;
-    final mediaPlayback = ref.read(mediaPlaybackProvider);
-    final newPosition = (mediaPlayback.position.inSeconds + seekPosition).clamp(0, mediaPlayback.duration.inSeconds);
-    ref.read(videoPlayerProvider).seek(Duration(seconds: newPosition));
   }
 
   void onSeekStart(int value) {
+    seekWithOffset(value);
+
     if (timer == null) {
       timer = RestartableTimer(const Duration(milliseconds: 500), () => onSeekEnd());
       setState(() {
