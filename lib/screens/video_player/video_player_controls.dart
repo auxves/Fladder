@@ -282,14 +282,13 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                           ],
                         ),
                       ),
-                    if (initInputDevice == InputDevice.touch)
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: Tooltip(
-                            message: context.localized.stop,
-                            child: IconButton(
-                                onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
-                      ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: Tooltip(
+                          message: context.localized.stop,
+                          child: IconButton(
+                              onPressed: () => closePlayer(), icon: const Icon(IconsaxPlusLinear.close_square))),
+                    ),
                   ],
                 ),
               ),
