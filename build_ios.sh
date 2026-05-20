@@ -2,6 +2,8 @@
 
 cd "$(dirname "$0")"
 
+rm -rf build/ios/iphoneos
+
 flutter build ios --flavor production --no-codesign
 
 codesign -s - -f build/ios/iphoneos/Runner.app
