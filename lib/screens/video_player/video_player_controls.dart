@@ -464,7 +464,7 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                   ),
                 ),
                 const Spacer(),
-                if (playbackModel != null)
+                if (playbackModel != null) ...[
                   InkWell(
                     onTap: () => showVideoPlaybackInformation(context),
                     child: Card(
@@ -476,16 +476,15 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                       ),
                     ),
                   ),
-                if (item != null) ...{
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       child: Text(
-                        item.streamModel?.mediaInfoTag ?? "",
+                        playbackModel.mediaStreams?.currentVersionStream?.detailedResolutionLabel ?? "",
                       ),
                     ),
                   ),
-                },
+                ],
               ].addPadding(const EdgeInsets.symmetric(horizontal: 4)),
             ),
             const SizedBox(height: 4),

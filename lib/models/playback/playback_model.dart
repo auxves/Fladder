@@ -362,7 +362,7 @@ class PlaybackModelHelper {
         return null;
       }
 
-      final mediaSource = playbackInfo.mediaSources?[newStreamModel?.versionStreamIndex ?? 0];
+      final mediaSource = playbackInfo.mediaSources?.first;
 
       if (mediaSource == null) {
         return null;
