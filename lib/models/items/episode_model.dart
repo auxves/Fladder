@@ -75,8 +75,9 @@ class EpisodeModel extends ItemStreamModel with EpisodeModelMappable {
   EpisodeStatus get status {
     return switch (location) {
       ItemLocation.filesystem => EpisodeStatus.available,
-      ItemLocation.virtual =>
-        (dateAired?.isBefore(DateTime.now()) == true) ? EpisodeStatus.missing : EpisodeStatus.unaired,
+      ItemLocation.virtual ||
+      ItemLocation.remote =>
+        (dateAired?.isBefore(DateTime.now()) == true) ? EpisodeStatus.available : EpisodeStatus.unaired,
       _ => EpisodeStatus.missing
     };
   }
