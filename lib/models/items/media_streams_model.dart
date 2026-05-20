@@ -69,7 +69,7 @@ class MediaStreamsModel {
     return "${stream.width}x${stream.height}";
   }
 
-  String? get mediaInfoTag => '${displayProfile?.value} ${resolution?.value}';
+  String? get mediaInfoTag => '${resolution?.value} ${displayProfile?.value}';
 
   Widget? audioIcon(
     BuildContext context,
@@ -200,14 +200,6 @@ class VersionStreamModel {
   final List<VideoStreamModel> videoStreams;
   final List<AudioStreamModel> audioStreams;
   final List<SubStreamModel> subStreams;
-
-  String get detailedResolutionLabel {
-    final stream = videoStreams.firstOrNull;
-    if (stream == null) return "Unknown";
-    final resolution = Resolution.fromVideoStream(stream)?.value ?? "Unknown";
-    final displayProfile = DisplayProfile.fromVideoStream(stream).value;
-    return "$resolution $displayProfile";
-  }
 
   VersionStreamModel({
     required this.name,

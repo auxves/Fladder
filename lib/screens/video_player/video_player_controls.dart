@@ -480,7 +480,7 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       child: Text(
-                        playbackModel.mediaStreams?.currentVersionStream?.detailedResolutionLabel ?? "",
+                        playbackModel.mediaStreams?.mediaInfoTag ?? "",
                       ),
                     ),
                   ),

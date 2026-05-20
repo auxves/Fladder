@@ -105,7 +105,7 @@ class OverviewHeader extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
               Text(
-                mediaStreamHelper?.mediaStream.currentVersionStream?.detailedResolutionLabel ?? "",
+                mediaStreamHelper?.mediaStream.mediaInfoTag ?? "",
               ),
             ],
           ),

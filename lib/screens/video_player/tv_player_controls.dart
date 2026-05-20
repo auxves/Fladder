@@ -400,12 +400,12 @@ class _TvPlayerControlsState extends ConsumerState<TvPlayerControls> {
                       ),
                     ),
                   ),
-                if (item?.streamModel?.mediaInfoTag != null) ...{
+                if (playbackModel != null) ...{
                   Card(
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                       child: Text(
-                        item?.streamModel?.mediaInfoTag ?? "",
+                        playbackModel.mediaStreams?.mediaInfoTag ?? "",
                       ),
                     ),
                   ),

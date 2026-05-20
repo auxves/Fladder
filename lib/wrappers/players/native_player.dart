@@ -191,7 +191,7 @@ class NativePlayer extends BasePlayer implements VideoPlayerListenerCallback {
           TvPlaybackModel() => PlaybackType.tv,
           _ => PlaybackType.direct,
         },
-        videoInformation: model.item.streamModel?.mediaInfoTag ?? " ",
+        videoInformation: model.mediaStreams?.mediaInfoTag ?? " ",
       ),
       url: model.media?.url ?? "",
     );
