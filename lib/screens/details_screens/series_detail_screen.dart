@@ -154,7 +154,7 @@ class _SeriesDetailScreenState extends ConsumerState<SeriesDetailScreen> {
                     studios: details.overview.studios,
                     officialRating: details.overview.parentalRating,
                     genres: details.overview.genreItems,
-                    mediaStreamHelper: currentEpisode?.mediaStreams != null
+                    mediaStreamHelper: currentEpisode?.mediaStreams.isNotEmpty == true
                         ? MediaStreamHelper(
                             mediaStream: currentEpisode!.mediaStreams,
                             onItemChanged: (changed) {

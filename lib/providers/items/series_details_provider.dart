@@ -52,12 +52,12 @@ class SeriesDetailViewNotifier extends StateNotifier<SeriesModel?> {
       state = newState;
 
       final seasons = await api.showsSeriesIdSeasonsGet(
-        seriesId: seriesModel.id,
+        seriesId: response.body!.id,
         enableUserData: false,
       );
 
       final episodes = await api.showsSeriesIdEpisodesGet(
-        seriesId: seriesModel.id,
+        seriesId: response.body!.id,
         enableUserData: true,
         fields: [
           ItemFields.mediastreams,
@@ -77,7 +77,7 @@ class SeriesDetailViewNotifier extends StateNotifier<SeriesModel?> {
         specialFeatures = (await api.itemsItemIdSpecialFeaturesGet(itemId: seriesModel.id)).body ?? [];
       } on Exception catch (e, s) {
         specialFeatures = [];
-        log("Failed to get special features for series id ${seriesModel.id} due to $e",
+        log("Failed to get special features for series id ${response.body!.id} due to $e",
             level: logging.Level.WARNING.value, error: e, stackTrace: s);
       }
 
