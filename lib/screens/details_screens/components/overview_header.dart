@@ -105,7 +105,7 @@ class OverviewHeader extends ConsumerWidget {
                 color: Theme.of(context).colorScheme.onPrimaryContainer,
               ),
               Text(
-                mediaStreamHelper?.mediaStream.mediaInfoTag ?? "",
+                mediaStreamHelper?.mediaStream.mediaInfoTag ?? "Version",
               ),
             ],
           ),
