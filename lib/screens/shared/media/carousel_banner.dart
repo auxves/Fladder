@@ -51,7 +51,9 @@ class _CarouselBannerState extends ConsumerState<CarouselBanner> {
               (MediaQuery.sizeOf(context).shortestSide * 0.75).clamp(251.0, double.maxFinite),
             );
             final border = BorderRadius.circular(18);
-            final itemExtent = widget.items.length == 1 ? MediaQuery.sizeOf(context).width : maxExtent;
+            final itemExtent = AdaptiveLayout.layoutModeOf(context) == LayoutMode.single && widget.items.length == 1
+                ? MediaQuery.sizeOf(context).width
+                : maxExtent;
 
             return Padding(
               padding: EdgeInsets.only(top: AdaptiveLayout.of(context).isDesktop ? 6 : 10),
