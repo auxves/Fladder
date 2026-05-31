@@ -453,7 +453,7 @@ Future<void> _playVideo(
   if (cancelOperation?.isCanceled ?? false) return;
 
   await ref.read(videoPlayerProvider.notifier).openPlayer(context);
-  if (AdaptiveLayout.of(context).isDesktop && defaultTargetPlatform != TargetPlatform.macOS) {
+  if (AdaptiveLayout.of(context).isDesktop) {
     fullScreenHelper.closeFullScreen(ref);
   }
 

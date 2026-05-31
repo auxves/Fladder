@@ -729,7 +729,7 @@ class _DesktopControlsState extends ConsumerState<DesktopControls> {
 
   Future<void> disableFullScreen() async {
     resetTimer();
-    if (AdaptiveLayout.of(context).isDesktop && defaultTargetPlatform != TargetPlatform.macOS) {
+    if (AdaptiveLayout.of(context).isDesktop) {
       fullScreenHelper.closeFullScreen(ref);
     }
   }
