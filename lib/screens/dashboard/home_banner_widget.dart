@@ -26,18 +26,21 @@ class HomeBannerWidget extends ConsumerWidget {
     final maxHeight = (MediaQuery.sizeOf(context).shortestSide * 0.6).clamp(125.0, 375.0);
 
     return switch (bannerType) {
-      HomeBanner.carousel => Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            CarouselBanner(
-              items: posters,
-              maxHeight: maxHeight,
-            ),
-            const SizedBox(height: 24)
-          ],
+      HomeBanner.carousel => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CarouselBanner(
+                items: posters,
+                maxHeight: maxHeight,
+              ),
+              const SizedBox(height: 24)
+            ],
+          ),
         ),
       HomeBanner.banner => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6),
+          padding: const EdgeInsets.symmetric(horizontal: 16),
           child: MediaBanner(
             items: posters,
             maxHeight: maxHeight,
