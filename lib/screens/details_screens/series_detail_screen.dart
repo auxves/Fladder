@@ -187,8 +187,6 @@ class _SeriesDetailScreenState extends ConsumerState<SeriesDetailScreen> {
                         contentPadding: padding,
                         selectedEpisode: currentEpisode,
                         seasons: details.seasons ?? [],
-                        titleActionsPosition:
-                            AdaptiveLayout.inputDeviceOf(context) == InputDevice.dPad ? null : VerticalDirection.down,
                         label: context.localized.episode(details.availableEpisodes?.length ?? 2),
                         onFocused: (episode) {
                           context.ensureVisible(alignment: 0.8);
