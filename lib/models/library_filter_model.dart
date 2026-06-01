@@ -51,7 +51,7 @@ abstract class LibraryFilterModel with _$LibraryFilterModel {
     @Default(SortingOrder.ascending) SortingOrder sortOrder,
     @Default(false) bool? favourites,
     @Default(true) bool hideEmptyShows,
-    @Default(true) bool? recursive,
+    @Default(false) bool? recursive,
     @Default(GroupBy.none) GroupBy groupBy,
   }) = _LibraryFilterModel;
 
@@ -63,7 +63,7 @@ abstract class LibraryFilterModel with _$LibraryFilterModel {
         officialRatings.hasEnabled ||
         hideEmptyShows ||
         itemFilters.hasEnabled ||
-        recursive == false ||
+        recursive == true ||
         favourites == true;
   }
 
@@ -126,7 +126,7 @@ abstract class LibraryFilterModel with _$LibraryFilterModel {
       officialRatings: officialRatings.setAll(false),
       years: years.setAll(false),
       favourites: false,
-      recursive: true,
+      recursive: false,
       studios: studios.setAll(false),
       itemFilters: itemFilters.setAll(false),
       hideEmptyShows: false,

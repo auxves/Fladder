@@ -444,7 +444,7 @@ class _LibraryFilterModel extends LibraryFilterModel
       this.sortOrder = SortingOrder.ascending,
       this.favourites = false,
       this.hideEmptyShows = true,
-      this.recursive = true,
+      this.recursive = false,
       this.groupBy = GroupBy.none})
       : _genres = genres,
         _itemFilters = itemFilters,
