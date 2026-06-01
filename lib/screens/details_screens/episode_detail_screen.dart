@@ -184,16 +184,6 @@ class _ItemDetailScreenState extends ConsumerState<EpisodeDetailScreen> {
                         ref.read(providerInstance.notifier).fetchDetails(widget.item);
                       },
                     ),
-                  if (actors.mainCast.isNotEmpty == true)
-                    PeopleRow(
-                      people: actors.mainCast,
-                      contentPadding: padding,
-                    ),
-                  if (actors.guestActors.isNotEmpty == true)
-                    PeopleRow(
-                      people: actors.guestActors,
-                      contentPadding: padding,
-                    ),
                   if (details.episodes.length > 1)
                     EpisodePosters(
                       contentPadding: padding,
@@ -212,6 +202,16 @@ class _ItemDetailScreenState extends ConsumerState<EpisodeDetailScreen> {
                         ref,
                       ),
                       episodes: details.episodes.where((element) => element.season == episodeDetails.season).toList(),
+                    ),
+                  if (actors.mainCast.isNotEmpty == true)
+                    PeopleRow(
+                      people: actors.mainCast,
+                      contentPadding: padding,
+                    ),
+                  if (actors.guestActors.isNotEmpty == true)
+                    PeopleRow(
+                      people: actors.guestActors,
+                      contentPadding: padding,
                     ),
                   if (details.series?.overview.externalUrls?.isNotEmpty == true)
                     Padding(
