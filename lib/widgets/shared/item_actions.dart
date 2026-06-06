@@ -111,23 +111,23 @@ class ItemActionButton extends ItemAction {
         builder: (context) {
           final resolvedForegroundColor = _resolveForegroundColor(context);
 
-          final child = useIcons
-              ? Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Row(
+          final child = Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: useIcons
+                ? Row(
                     children: [
                       if (icon != null) icon!,
                       const SizedBox(width: 8),
                       if (label != null) Flexible(child: label!),
                     ],
+                  )
+                : Row(
+                    children: [
+                      if (label != null) Expanded(child: label!),
+                      if (selected) Icon(IconsaxPlusBold.tick_square, size: 24, color: resolvedForegroundColor),
+                    ],
                   ),
-                )
-              : Row(
-                  children: [
-                    if (label != null) Expanded(child: label!),
-                    if (selected) Icon(IconsaxPlusBold.tick_square, size: 24, color: resolvedForegroundColor),
-                  ],
-                );
+          );
 
           return IconTheme(
             data: IconThemeData(color: resolvedForegroundColor),
@@ -154,11 +154,12 @@ class ItemActionButton extends ItemAction {
       autofocus: AdaptiveLayout.inputDeviceOf(context) == InputDevice.dPad && selected,
       style: ButtonStyle(
         backgroundColor: WidgetStatePropertyAll(background),
-        padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 12)),
+        padding: const WidgetStatePropertyAll(EdgeInsets.all(16)),
         minimumSize: const WidgetStatePropertyAll(Size(50, 50)),
         elevation: const WidgetStatePropertyAll(0),
         foregroundColor: WidgetStatePropertyAll(foregroundColor),
         iconColor: WidgetStatePropertyAll(foregroundColor),
+        alignment: Alignment.centerLeft,
       ),
       onPressed: () {
         if (shouldPop) {
